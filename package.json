@@ -6,9 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js",
+    "prettier": "prettier . --write"
   },
   "devDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
     "vite": "^5.1.4"
   }
 }
