@@ -1,3 +1,5 @@
+/* global DOMPoint, requestAnimationFrame */
+
 const appEl = document.querySelector('#app')
 
 const ITERATIONS = 2
