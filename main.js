@@ -210,14 +210,12 @@ function makePointerHandler () {
 
 function render (app, points, joins) {
   const doc =
-    '<g>' +
     joins
       .map(
         (join) =>
           `<line x1="${join.from.x}" y1="${join.from.y}" x2="${join.to.x}" y2="${join.to.y}"></line>`
       )
-      .join('') +
-    '</g>'
+      .join('')
 
   app.innerHTML = doc
 }
