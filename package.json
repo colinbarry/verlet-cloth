@@ -8,13 +8,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .js",
-    "prettier": "prettier . --write",
-    "standard": "standard --fix"
+    "prettier": "prettier . --write"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
-    "standard": "^17.1.0",
     "vite": "^5.1.4"
   }
 }

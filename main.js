@@ -1,14 +1,14 @@
 /* global DOMPoint, requestAnimationFrame */
 
-const appEl = document.querySelector('#app')
+const appEl = document.querySelector("#app")
 
 const ITERATIONS = 2
 
-function difference (p0, p1) {
+function difference(p0, p1) {
   return { x: p0.x - p1.x, y: p0.y - p1.y }
 }
 
-function length (point) {
+function length(point) {
   return Math.sqrt(point.x * point.x + point.y * point.y)
 }
 
@@ -16,13 +16,13 @@ function length (point) {
  | a b |
  | c d |
  */
-function det (a, b, c, d) {
+function det(a, b, c, d) {
   return a * d - b * c
 }
 
 /** True if the lines given by the points intersect
  */
-function lineIntersectsLine (x1, y1, x2, y2, x3, y3, x4, y4) {
+function lineIntersectsLine(x1, y1, x2, y2, x3, y3, x4, y4) {
   const x =
     det(det(x1, y1, x2, y2), x1 - x2, det(x3, y3, x4, y4), x3 - x4) /
     det(x1 - x2, y1 - y2, x3 - x4, y3 - y4)
@@ -43,11 +43,11 @@ function lineIntersectsLine (x1, y1, x2, y2, x3, y3, x4, y4) {
   return intersects
 }
 
-function makeModel (width, height) {
+function makeModel(width, height) {
   let points = []
   let joins = []
 
-  function makeJoin (from, to) {
+  function makeJoin(from, to) {
     const len = length(difference(from, to))
     return { from, to, length: len }
   }
@@ -65,7 +65,7 @@ function makeModel (width, height) {
     }
   }
 
-  function pointByPosition (r, c) {
+  function pointByPosition(r, c) {
     return points[r * width + c]
   }
 
@@ -78,7 +78,7 @@ function makeModel (width, height) {
           joins.push(makeJoin(from, pointByPosition(r + 1, c + 1)))
         } else {
           joins.push(
-            makeJoin(pointByPosition(r, c + 1), pointByPosition(r + 1, c))
+            makeJoin(pointByPosition(r, c + 1), pointByPosition(r + 1, c)),
           )
         }
       }
@@ -91,7 +91,7 @@ function makeModel (width, height) {
     }
   }
 
-  function tick (deltaTime) {
+  function tick(deltaTime) {
     deltaTime = Math.min(deltaTime, 1 / 30)
     const force = { x: Math.random() * 0.1, y: 0.8 }
 
@@ -131,16 +131,16 @@ function makeModel (width, height) {
     }
   }
 
-  function removePoint (point) {
+  function removePoint(point) {
     points = points.filter((each) => each !== point)
     joins = joins.filter((each) => each.from !== point && each.to !== point)
   }
 
-  function removeJoin (joinToRemove) {
+  function removeJoin(joinToRemove) {
     joins = joins.filter((each) => each !== joinToRemove)
 
     const pointsUsingJoin = points.filter(
-      (point) => point === joinToRemove.from || point === joinToRemove.to
+      (point) => point === joinToRemove.from || point === joinToRemove.to,
     )
     const pointsToDelete = pointsUsingJoin.filter((point) => {
       return (
@@ -159,15 +159,15 @@ function makeModel (width, height) {
     tick,
 
     removePoint,
-    removeJoin
+    removeJoin,
   }
 }
 
-function makePointerHandler () {
+function makePointerHandler() {
   let isDragging = false
   let prevPoint
 
-  appEl.addEventListener('pointerdown', (e) => {
+  appEl.addEventListener("pointerdown", (e) => {
     isDragging = true
 
     const pt = appEl.createSVGPoint()
@@ -178,7 +178,7 @@ function makePointerHandler () {
     prevPoint = { x: txPoint.x, y: txPoint.y }
   })
 
-  appEl.addEventListener('pointermove', (e) => {
+  appEl.addEventListener("pointermove", (e) => {
     if (isDragging) {
       const pt = new DOMPoint(e.clientX, e.clientY)
       const txPoint = pt.matrixTransform(appEl.getScreenCTM().inverse())
@@ -194,7 +194,7 @@ function makePointerHandler () {
           join.from.x,
           join.from.y,
           join.to.x,
-          join.to.y
+          join.to.y,
         )
       })
 
@@ -203,19 +203,18 @@ function makePointerHandler () {
     }
   })
 
-  appEl.addEventListener('pointerup', () => {
+  appEl.addEventListener("pointerup", () => {
     isDragging = false
   })
 }
 
-function render (app, points, joins) {
-  const doc =
-    joins
-      .map(
-        (join) =>
-          `<line x1="${join.from.x}" y1="${join.from.y}" x2="${join.to.x}" y2="${join.to.y}"></line>`
-      )
-      .join('')
+function render(app, points, joins) {
+  const doc = joins
+    .map(
+      (join) =>
+        `<line x1="${join.from.x}" y1="${join.from.y}" x2="${join.to.x}" y2="${join.to.y}"></line>`,
+    )
+    .join("")
 
   app.innerHTML = doc
 }
@@ -224,7 +223,7 @@ const model = makeModel(24, 24)
 makePointerHandler()
 
 let timestamp
-function frame (now) {
+function frame(now) {
   if (timestamp === undefined) {
     timestamp = now
   }
